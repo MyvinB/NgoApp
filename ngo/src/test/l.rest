@@ -1,0 +1,17 @@
+DELETE
+http://localhost:8081/delete/129
+
+%%%
+
+# Duration: 238 ms
+# URL: http://localhost:8081/delete/129
+
+# HTTP/1.1 200
+
+@Content-Type: text/plain;charset=UTF-8
+@Content-Length: 17
+@Date: Fri, 28 Feb 2020 05:50:19 GMT
+@Keep-Alive: timeout=60
+@Connection: keep-alive
+
+Delete Successful
