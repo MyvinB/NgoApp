@@ -12,14 +12,13 @@ import javax.persistence.Id;
 @Entity
 public class Restaurant {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private int id;
+    private String id;
     private String name;
     private String location;
     private int food_availability;
-    private int quantity;
 
-    public int getId() {
+
+    public String getId() {
         return id;
     }
 
@@ -31,7 +30,7 @@ public class Restaurant {
         this.food_availability = food_availability;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
 
     }
@@ -56,23 +55,16 @@ public class Restaurant {
         this.location = location;
     }
 
-    public Restaurant(int id, String name, String location, int foodAvailability, int quantity) {
+    public Restaurant(String id, String name, String location, int foodAvailability, int quantity) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.food_availability = food_availability;
-        this.quantity = quantity;
+
     }
 
 
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
 
 }

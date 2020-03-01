@@ -14,7 +14,10 @@ import java.util.List;
 public interface RestaurantService {
 
     public List<Restaurant> getAllRestaurant();
-
-    public void changeState(int id);
+    public boolean saveRestaurant(Restaurant restaurant);
+    public boolean deleteRestaurant(String id);
+    public Restaurant findById(String id);
+    public void changeState(String id);
+    public boolean updateRestaurant(Restaurant restaurant,String userId);
 
 }

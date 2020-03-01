@@ -10,9 +10,9 @@ import com.cts.ngo.model.Ngo;
 public interface NgoService {
     public boolean saveNgo(Ngo ngo);
 
-    public Ngo findByNameAndPassword(String name,String password);
+    public Ngo getNgo(String id);
 
-    public boolean updateNgo(Ngo ngo,int id);
+    public boolean updateNgo(Ngo ngo,String id);
 
-    public boolean deleteNgo(int id);
+    public boolean deleteNgo(String id);
 }

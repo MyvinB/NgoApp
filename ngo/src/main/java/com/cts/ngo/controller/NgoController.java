@@ -6,67 +6,54 @@ package com.cts.ngo.controller;/*
  */
 
 import com.cts.ngo.model.Ngo;
-import com.cts.ngo.repository.NgoRepository;
 import com.cts.ngo.service.NgoServiceImpl;
-import com.cts.ngo.service.SecurityTokenGenerator;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 public class NgoController {
     @GetMapping
     public String getAll(){
-        return "I love NGo";
+        return "ngo is good";
     }
 
     @Autowired
     NgoServiceImpl ngoService;
 
-    @Autowired
-    SecurityTokenGenerator tokenGenerator;
-    ///Create
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody Ngo ngo){
+    //To get USERID from request
+    static String getUser(HttpServletRequest request){
+        final String authHeader = request.getHeader("authorization");
+        final String token = authHeader.substring(7);
+        String user= Jwts.parser().setSigningKey("secretkey").parseClaimsJws(token).getBody().getSubject();
+        String s[]=user.split("-");
+       return s[0];
+    }
+    //create Ngo
+    @PostMapping
+    public ResponseEntity<?> createNgo(HttpServletRequest request,@RequestBody Ngo ngo){
+        String userId=getUser(request);
+        ngo.setId(userId);
         try{
             ngoService.saveNgo(ngo);
-            return new ResponseEntity<String>("Ngo registered succeesfulty", HttpStatus.CREATED);
-        }catch(Exception e) {
+        }catch(Exception e){
             return new ResponseEntity<String>("message"+e.getMessage(),HttpStatus.CONFLICT);
         }
-    }
 
-
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody Ngo ngo){
-        try {
-            String name = ngo.getName();
-            String password = ngo.getPassword();
-            if(name==null || password==null) {
-                throw new Exception("username or passwrd can not be empty");
-            }
-            Ngo fetchedNgo =ngoService.findByNameAndPassword(name,password);
-            if(fetchedNgo==null) {
-                throw new Exception("Ngo does not exist");
-            }
-            if(!password.equals(fetchedNgo.getPassword())) {
-                throw new Exception("Sign in failed please check username or password");
-
-            }
-            Map<String ,String> map=tokenGenerator.generateToken(fetchedNgo);
-            return new ResponseEntity<Map<String,String>>(map,HttpStatus.OK);
-        }catch(Exception e) {
-            return new ResponseEntity<String>("message"+e.getMessage(),HttpStatus.UNAUTHORIZED);
-        }
+        return new ResponseEntity<String>("Save Successful",HttpStatus.OK);
     }
 
     ///Update
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateNgo(@RequestBody Ngo ngo,@PathVariable Integer id){
-            try{
+    @PutMapping
+    public ResponseEntity<?> updateNgo(HttpServletRequest request,@RequestBody Ngo ngo){
+        String id=getUser(request);
+        try{
                 ngoService.updateNgo(ngo,id);
             }catch(Exception e){
                 return new ResponseEntity<String>("message"+e.getMessage(),HttpStatus.CONFLICT);
@@ -76,9 +63,9 @@ public class NgoController {
     }
 
     ///Delete
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteNgo(@PathVariable Integer id){
+    @DeleteMapping
+    public ResponseEntity<?> deleteNgo(HttpServletRequest request){
+        String id=getUser(request);
         try{
             ngoService.deleteNgo(id);
         }catch(Exception e){
@@ -87,6 +74,18 @@ public class NgoController {
         return new ResponseEntity<String>("Delete Successful",HttpStatus.OK);
     }
 
+    //get Ngo
+    @GetMapping("getNgo")
+    public ResponseEntity<?> getNgo(HttpServletRequest request){
+        String id=getUser(request);
+        try{
+
+            return new ResponseEntity<Ngo>( ngoService.getNgo(id)   ,HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<String>("message"+e.getMessage(),HttpStatus.CONFLICT);
+        }
+
+    }
 
 
 }

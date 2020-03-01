@@ -1,15 +1,18 @@
 package com.cts.restaurant;
 
+import brave.sampler.Sampler;
+import com.cts.restaurant.filter.JwtFilter;
 import com.cts.restaurant.model.Restaurant;
 import com.cts.restaurant.repository.RestaurantRespository;
-import com.opencsv.CSVReader;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+//import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,58 +23,25 @@ import java.util.Map;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class RestaurantApplication implements CommandLineRunner {
+//@EnableHystrix
+public class RestaurantApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(RestaurantApplication.class, args);
 	}
 
-	@Autowired
-	RestaurantRespository restaurantRespository;
+	@Bean
+	public FilterRegistrationBean jwtFilter() {
+		final FilterRegistrationBean registerBean = new FilterRegistrationBean();
+		registerBean.setFilter(new JwtFilter());
+		registerBean.addUrlPatterns("/*");
+		return registerBean;
+	}
 
-
-
-
-	@Override
-	public void run(String... args) throws Exception {
-
-//
-//
-//		Map<String, String> mapping = new
-//				HashMap<String, String>();
-//		mapping.put("name", "name");
-//		mapping.put("quantity", "quantity");
-//		mapping.put("food_availability", "food_availability");
-//		mapping.put("location", "location");
-//
-//
-//
-//		HeaderColumnNameTranslateMappingStrategy<Restaurant> strategy =
-//				new HeaderColumnNameTranslateMappingStrategy<Restaurant>();
-//		strategy.setType(Restaurant.class);
-//		strategy.setColumnMapping(mapping);
-//		CSVReader csvReader = null;
-//		try {
-//			csvReader = new CSVReader(new FileReader
-//					("src/main/resources/data.csv"));
-//		}
-//		catch (FileNotFoundException e) {
-//
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		CsvToBean csvToBean = new CsvToBean();
-//
-//		// call the parse method of CsvToBean
-//		// pass strategy, csvReader to parse method
-//		List<Restaurant> list = csvToBean.parse(strategy, csvReader);
-//		for (Restaurant e : list) {
-//
-//
-//			restaurantRespository.save(e);
-//		}
-
-
+	@Bean
+	public Sampler defaultSampler(){
+		return Sampler.ALWAYS_SAMPLE;
+	}
 
 	}
-}
+

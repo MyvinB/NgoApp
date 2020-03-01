@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 public interface RestaurantRespository extends JpaRepository<Restaurant,Integer> {
-public Restaurant findById(int id);
+public Restaurant findById(String id);
 
 @Query(nativeQuery =true,value = "SELECT * FROM Restaurant as e WHERE e.food_availability=1")
 public List<Restaurant> getListRestaurants();

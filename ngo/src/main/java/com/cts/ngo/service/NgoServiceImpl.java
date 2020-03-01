@@ -10,6 +10,7 @@ import com.cts.ngo.repository.NgoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.DocFlavor;
 import javax.validation.constraints.Null;
 
 
@@ -25,23 +26,27 @@ public class NgoServiceImpl implements NgoService {
     }
 
     @Override
-    public Ngo findByNameAndPassword(String name, String password) {
-        return ngoRepository.findByNameAndPassword(name, password);
+    public Ngo getNgo(String id) {
+    return ngoRepository.findById(id);
     }
 
+
     @Override
-    public boolean updateNgo(Ngo ngo, int id) {
-        Ngo tempNgo = ngoRepository.findById(id).orElse(null);
-        tempNgo.setLocation(ngo.getLocation() == "" ? tempNgo.getLocation() : ngo.getLocation());
-        tempNgo.setName(ngo.getName() == "" ? tempNgo.getName() : ngo.getName());
-        tempNgo.setPassword(ngo.getPassword()==""?tempNgo.getPassword():ngo.getPassword());
+    public boolean updateNgo(Ngo ngo, String id) {
+        Ngo tempNgo = ngoRepository.findById(id);
+        tempNgo.setLocation(ngo.getLocation().equals("") ? tempNgo.getLocation() : ngo.getLocation());
+        tempNgo.setName(ngo.getName().equals("") ? tempNgo.getName() : ngo.getName());
+        System.out.println(tempNgo.toString()+"temp");
+        System.out.println(ngo.toString());
         ngoRepository.save(tempNgo);
         return true;
     }
 
+
+
     @Override
-    public boolean deleteNgo(int id) {
-        Ngo tempNgo=ngoRepository.findById(id).orElse(null);
+    public boolean deleteNgo(String id) {
+        Ngo tempNgo=ngoRepository.findById(id);
         ngoRepository.delete(tempNgo);
         return true;
     }

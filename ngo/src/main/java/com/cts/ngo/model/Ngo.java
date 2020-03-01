@@ -12,37 +12,35 @@ import javax.persistence.Id;
 @Entity
 public class Ngo {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private int id;
+    private String id;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+
 
     private String name;
-    private String location;
-    private String password;
 
-    public String getPassword() {
-        return password;
-    }
+
+
+    private String location;
+
+
 
     public Ngo() {
 
     }
 
-    public Ngo(int id, String name, String location) {
+    public Ngo(String id, String name, String location) {
         this.id = id;
         this.name = name;
         this.location = location;
+
     }
 
-    public int getId() {
+    public String getId() {
 
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,5 +1,7 @@
 package com.cts.ngo;
 
+//import brave.sampler.Sampler;
+import com.cts.ngo.filter.JwtFilter;
 import com.cts.ngo.model.Ngo;
 import com.cts.ngo.repository.NgoRepository;
 import com.opencsv.CSVReader;
@@ -9,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -25,43 +30,24 @@ public class NgoApplication implements CommandLineRunner {
 		SpringApplication.run(NgoApplication.class, args);
 	}
 
+	@Bean
+	public FilterRegistrationBean jwtFilter() {
+		final FilterRegistrationBean registerBean = new FilterRegistrationBean();
+		registerBean.setFilter(new JwtFilter());
+		registerBean.addUrlPatterns("/*");
+		return registerBean;
+	}
+
+//	@Bean
+//	public Sampler defaultSampler(){
+//		return Sampler.ALWAYS_SAMPLE;
+//	}
 	@Autowired
 	NgoRepository ngoRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
 
-//		Map<String, String> mapping = new
-//				HashMap<String, String>();
-//		mapping.put("name", "name");
-//		mapping.put("quantity", "quantity");
-//		mapping.put("location", "location");
-//
-//
-//
-//		HeaderColumnNameTranslateMappingStrategy<Ngo> strategy =
-//				new HeaderColumnNameTranslateMappingStrategy<Ngo>();
-//		strategy.setType(Ngo.class);
-//		strategy.setColumnMapping(mapping);
-//		CSVReader csvReader = null;
-//		try {
-//			csvReader = new CSVReader(new FileReader
-//					("src/main/resources/data.csv"));
-//		}
-//		catch (FileNotFoundException e) {
-//
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		CsvToBean csvToBean = new CsvToBean();
-//
-//		// call the parse method of CsvToBean
-//		// pass strategy, csvReader to parse method
-//		List<Ngo> list = csvToBean.parse(strategy, csvReader);
-//		for (Ngo e : list) {
-//
-//
-//			ngoRepository.save(e);
-//		}
+
 	}
 }

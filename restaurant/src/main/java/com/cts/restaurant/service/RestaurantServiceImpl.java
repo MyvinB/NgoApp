@@ -23,7 +23,26 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public void changeState(int id) {
+    public boolean saveRestaurant(Restaurant restaurant) {
+        restaurantRespository.save(restaurant);
+        return true;
+    }
+
+    @Override
+    public boolean deleteRestaurant(String id) {
+        Restaurant tempRestaurant=restaurantRespository.findById(id);
+        restaurantRespository.delete(tempRestaurant);
+        return true;
+    }
+
+    @Override
+    public Restaurant findById(String id) {
+       return restaurantRespository.findById(id);
+
+    }
+
+    @Override
+    public void changeState(String id) {
 
         Restaurant object=restaurantRespository.findById(id);
         if(object==null){
@@ -32,5 +51,15 @@ public class RestaurantServiceImpl implements RestaurantService {
         object.setFood_availability(0);
         restaurantRespository.save(object);
 
+    }
+
+    @Override
+    public boolean updateRestaurant(Restaurant restaurant,String id) {
+        Restaurant tempRestaurant=restaurantRespository.findById(id);
+        tempRestaurant.setName(restaurant.getLocation() == "" ? tempRestaurant.getLocation() : restaurant.getLocation());
+        tempRestaurant.setName(restaurant.getName() == "" ? tempRestaurant.getName() : restaurant.getName());
+        tempRestaurant.setFood_availability(restaurant.getFood_availability()==0?tempRestaurant.getFood_availability():restaurant.getFood_availability());
+        restaurantRespository.save(tempRestaurant);
+        return true;
     }
 }
