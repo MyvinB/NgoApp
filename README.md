@@ -26,7 +26,7 @@ An Ngo app to see the excess food left in restaurants and book it for their Ngo.
 ![small](images/Eureka.png)  
   ## Zipkin
   ![small](images/Zipkin.png) 
-  ## User Screen
+  ## User Screen 
   ![small](images/Login.png)
   ![small](images/Register.png) 
   ![small](images/RestaurantCreate.png)
@@ -34,5 +34,5 @@ An Ngo app to see the excess food left in restaurants and book it for their Ngo.
   ![small](images/UpdateRestaurant.png)
   ![small](images/Register.png)
   ![small](images/NgoCreate.png)
-  ![small](images/NgoCheckout.png)
-  ![small](images/Receipt.png) 
+  ![small](images/NgoCheckout.png)  
+ 
